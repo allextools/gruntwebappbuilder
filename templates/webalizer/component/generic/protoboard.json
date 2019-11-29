@@ -1,0 +1,11 @@
+{
+  "js" : {
+    "all" : [
+    ]
+  },
+  "css": {
+  },
+  "browserify": {
+    "dist/browserified.js":"../browserify.js"
+  }
+}

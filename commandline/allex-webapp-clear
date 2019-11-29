@@ -1,0 +1,3 @@
+#!/bin/bash
+## TODO: introduce some checks here ...
+rm -rf node_modules/ components/

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" itemscope="itemscope" itemtype="http://schema.org/Product" {% if vars && vars.manifest && cache_manifest %} manifest="{{cache_manifest}}" {%- endif %} {% if vars.html -%} {% if vars.html.attributes -%}{% autoescape false %}{{vars.html.attributes}}{% endautoescape %}{%- endif %}{%- endif %}>
+  {% include '../includes/head.html' %}
+
+  {% block content %}{% endblock %}
+    <body  {% if vars.body -%} {% if vars.body.app -%}data-ng-app="{{vars.body.app}}"{%- endif %} {% if vars.body.attributes -%}{% autoescape false %}{{vars.body.attributes}}{% endautoescape %}{%- endif %}{%- endif %}>
+    <div id="splash_screen_container"></div>
+  {% block left_menu %}{% endblock %}
+
+  <div {% if vars.container -%} {% if vars.container.attributes -%}{% autoescape false %}{{vars.container.attributes}}{% endautoescape %}{%- endif %}{%- else -%}class="container"{%- endif %}>
+    {% block top_menu %}{% endblock %}
+    <section class="content">
+      {% block before_view %}{% endblock %}
+      <allex-view id="mainview"></allex-view>
+    </section>
+  </div>
+  {% block footer_content %}{% endblock %}
+  {% include '../includes/foot.html' %}
+  </body>
+</html>
+

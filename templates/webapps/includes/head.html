@@ -1,0 +1,106 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  
+  <!-- TODO: -->
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+  <meta name="keywords" content="node.js, express, mongoose, mongodb, angularjs, swig, ecosystem:protoboard">
+  <meta name="description" content="Protoboard WEB app">
+
+  {% -if vars && vars.jsonmanifest %}
+      <link rel="manifest" href="{{page}}.json">
+  {%- endif %}
+
+  {%- if vars && vars.icons %}
+
+    {%- for icon in vars.icons %}
+      <link rel="icon" sizes="{{icon.size}}x{{icon.size}}" href="{{icon.href}}">
+      <link rel="apple-touch-icon" sizes="{{icon.size}}x{{icon.size}}" href="{{icon.href}}">
+    {%- endfor %}
+  {% endif %}
+
+  {%- if vars && vars.webapp %}
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-status-bar-style" content="black-translucent">
+    {%- if vars.webapp.title %}
+      <meta name="apple-mobile-web-app-title" content="{{vars.webapp.title}}">
+      <title>{{vars.webapp.title}}</title>
+    {%- endif %}
+    {%- if vars.webapp.icons %}
+      {%- if vars.webapp.icons.any %}
+        <link rel="apple-touch-icon" href="{{vars.webapp.icons.any}}">
+      {%- endif %}
+      {%- if vars.webapp.icons.icon76 %}
+        <link rel="apple-touch-icon" href="{{vars.webapp.icons.icon76}}">
+      {%- endif %}
+      {%- if vars.webapp.icons.icon120 %}
+        <link rel="apple-touch-icon" href="{{vars.webapp.icons.icon120}}">
+      {%- endif %}
+      {%- if vars.webapp.icons.icon152 %}
+        <link rel="apple-touch-icon" href="{{vars.webapp.icons.icon152}}">
+      {%- endif %}
+    {%- endif %}
+    {%- if vars.webapp.startupimage %}
+      <link rel="apple-touch-startup-image" href="{{vars.webapp.startupimage}}">
+    {%- endif %}
+  {%- endif %}
+
+  {% if vars && vars.meta %}
+    {%- for meta in vars.meta %}
+      <meta {{ meta | raw}}>
+    {%- endfor %}
+  {% endif %}
+
+
+  <meta property="og:description" content="ProtoBoard WebApp stack">
+  <meta property="og:type" content="website">
+  {% if vars.links %}
+    {%- for l in vars.links %}
+      <link {{l | raw}}>
+    {%- endfor %}
+  {% endif %}
+  {% if app %}
+  {% if app.facebook %}
+  <meta property="fb:app_id" content="APP_ID">
+  {% endif %}
+  {% if app.name %}
+  <title>{{app.name}}</title>
+  <meta property="og:title" content="{{app.name}} - {{app.title}}">
+  {% endif %}
+  {% if app.url %}
+  <meta property="og:url" content="{{app.url}}">
+  {% endif %}
+  {% if app.image %}
+  <meta property="og:image" content="{{app.logo}}">
+  {% endif %}
+  {% if app.site_name %}
+  <meta property="og:site_name" content="{{app.site_name}}">
+  {% endif %}
+  {% if app.admins %}
+  <meta property="fb:admins" content="{{app.admin}}">
+  {% endif %}
+  {% endif %}
+
+  {% include "./css.html" %}
+
+  {%- if vars && vars.splash_img %}
+    <link rel="apple-touch-startup-image" href="{{vars.splash_img}}">
+  {%- endif %}
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  {%- if vars && vars.head_tags %}
+    {%- for l in vars.head_tags %}
+      {{l | raw}}
+    {%- endfor %}
+  {%- endif %}
+
+  {%- if head_content -%}
+    {{head_content | raw}}
+  {%- endif -%}
+</head>

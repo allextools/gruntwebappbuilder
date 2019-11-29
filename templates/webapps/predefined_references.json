@@ -1,0 +1,77 @@
+{
+  "#BASIC_CSS": [
+      {
+        "p": "node_modules/bootstrap/dist/css",
+        "d": "bootstrap.css",
+        "m": "bootstrap.min.css"
+      },
+      "node_modules/components-font-awesome/css/font-awesome.css",
+      "node_modules/angular-ui-grid/ui-grid.css",
+      "generic.css",
+      "overrides.css"
+  ],
+  "#WEBFONTLOADER": [
+    "node_modules/webfontloader/webfontloader.js"
+  ],
+  "#REQUIREMENTS" : [
+      {
+        "p": "node_modules/jquery/dist",
+        "d": "jquery.js",
+        "m": "jquery.min.js"
+      },
+      {
+        "p": "node_modules/angular",
+        "d": "angular.js",
+        "m": "angular.min.js"
+      },
+      {
+        "p" : "node_modules/angular-animate",
+        "d" : "angular-animate.js",
+        "m" : "angular-animate.min.js"
+      },
+      {
+        "p": "node_modules/bootstrap/dist/js/",
+        "d": "bootstrap.js",
+        "m": "bootstrap.min.js"
+      },
+      {
+        "p": "node_modules/angular-bootstrap",
+        "d": "ui-bootstrap-tpls.js",
+        "m": "ui-bootstrap-tpls.min.js"
+      }
+   ],
+   "#ALLEXBASIC": [
+      "allex:datafilters:lib",
+      "allex:buffer:lib",
+      "allex:leveldb:lib",
+      "allex:userrepresentation:lib",
+      "allex:environment:lib",
+      "allex:http",
+      "allex:entrypoint",
+      "allex:data",
+      "allex:servicecontainer",
+      "allex:servicecollection",
+      "allex:user",
+      "allex:hotel",
+      "allex:usersessions",
+      "allex:leveldb",
+      "allex:userresolver",
+      "allex:genericuserdata"
+   ],
+   "#ALLEX_BROWSER_CORE": [
+     "node_modules/allex_browsercore/dist/browsercore.js",
+     "node_modules/allexns/ns.js"
+   ],
+   "#VEKTR" : [
+      "components/vektr/dist/bridge.allex.js",
+      "components/vektr/dist/lib.js",
+      "components/vektr/dist/angular.js"
+   ],
+   "#BOOT": [
+     "PAGE/fontloaderconfig.js",
+     "PAGE/boot.js"
+   ],
+   "#CONFIG" :[
+    "PAGE/configs.js"
+   ]
+}

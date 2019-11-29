@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var lib = require('allexlib'),
+  Node = require('allex_nodehelpersserverruntimelib')(lib),
+  Fs = Node.Fs,
+  Path = Node.Path,
+  dependencies;
+
+
+try {
+  dependencies = Fs.readFieldFromJSONFile(Path.resolve(process.cwd(), 'package.json'), 'dependencies');
+} catch (e) {
+  Node.error(e.message);
+  process.exit(1);
+}
+
+lib.traverseShallow (dependencies, uninstaller);
+Node.info('package.json purged');
+
+function uninstaller (version, modulename) {
+  Node.info('npm uninstalling '+modulename);
+  return Node.executeCommandSync('npm uninstall '+modulename, null, {}, true);
+}

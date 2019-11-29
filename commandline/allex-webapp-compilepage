@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+var lib = require('allexlib'),
+  Grunter = require('allex_grunthelperssdklib')(lib),
+  BasicProgram = require('allex_basicprogramsdklib')(lib),
+  p = new BasicProgram(__dirname),
+  webappbuildlib = require('..')(lib),
+  compilepage = webappbuildlib.compile.go,
+  comp;
+
+p.program
+.usage('allex-webapp-compilepage [OPTIONS] [VARIANT] : Build your webapp page using this tool')
+.option('-v, --verbose', 'Do a verbose run');
+
+p.go();
+
+comp = compilepage(process.cwd(), p.program.args[0]);
+
+/*
+Grunter.goforGrunt(webappbuildlib.build, {
+  devel : true,
+  clean : false,
+  rebuild : false,
+  distro : p.program.args[0],
+  pb_dir : comp.pb_dir
+},{verbose: p.program.verbose});
+*/

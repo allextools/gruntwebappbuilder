@@ -1,0 +1,23 @@
+{
+  "#ALLEXBASIC": {
+    "allex_httpservice": "1.x",
+    "allex_userrepresentationlib": "1.x",
+    "allex_entrypointservice": "1.x",
+    "allex_datafilterslib": "1.x",
+    "allex_dataservice": "1.x",
+    "allex:servicecontainer",
+    "allex:servicecollection",
+    "allex_userservice": "1.x",
+    "allex_hotelservice": "1.x",
+    "allex_usersessionsservice": "1.x",
+    "allex_bufferlib": "1.x",
+    "allex_leveldblib": "1.x",
+    "allex_leveldbservice": "1.x",
+    "allex_userresolverservice": "1.x",
+    "allex_genericuserdataservice": "1.x"
+  },
+  "#ALLEX_BROWSER_CORE": [
+    "node_modules/allex_browsercore/dist/browsercore.js",
+    "node_modules/allexns/ns.js"
+  ]
+}

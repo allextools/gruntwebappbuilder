@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+var DEFAULT_TEMPLATE = 'generic',
+  Lib = require('allexlib'),
+  Np = require('allex_basicprogramsdklib')(Lib),
+  p = new Np(__dirname),
+  create = require('..')(Lib).create,
+  Node = require('allex_nodehelpersserverruntimelib')(Lib);
+
+p.program
+  .option ('-d,--directory <string>', 'Directory path')
+  ;
+
+p.program.parse(process.argv);
+
+
+var page_command = 'allex-webapp-addpage index';
+
+
+create(p.program.directory || process.cwd());
+console.log(Node.executeCommandSync(page_command).toString());

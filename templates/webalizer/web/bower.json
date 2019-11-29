@@ -1,0 +1,40 @@
+{
+  "name": "GENERIC TEMPLATE",
+  "version": "0.0.1",
+  "authors": [
+    "HERS development team"
+  ],
+  "description": "HERS webapp template",
+  "keywords": [
+    "ecosystem:protoboard"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3",
+    "bootstrap": "~3.3.2",
+    "components-font-awesome": "~4.3.0",
+    "allex__web_webappcomponent": "allex_web_webappcomponent#~0",
+    "allex__web_angularcomponent": "allex_web_angularcomponent#~1",
+    "angular": "1.5.8",
+    "angular-sanitize": "1.5.8",
+    "allex_browsercore": "^1.0.3",
+    "allexjs-angular-ui-grid" : "~3"
+  },
+  "devDependencies" : {},
+  "resolutions" : {
+    "angular-sanitize": "1.5.8",
+    "angular": "1.5.8",
+    "jquery": "~2.1.3",
+    "bootstrap": "~3.3.2",
+    "components-font-awesome": "~4.3.0",
+    "angular": "^1.5.8"
+  }
+}

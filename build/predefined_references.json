@@ -1,0 +1,111 @@
+{
+  "#BASIC_CSS": [
+      {
+        "p": "node_modules/bootstrap/dist/css",
+        "d": "bootstrap.css",
+        "m": "bootstrap.min.css"
+      },
+      "node_modules/components-font-awesome/css/font-awesome.css",
+      "node_modules/angular-ui-grid/ui-grid.css",
+      "generic.css",
+      "overrides.css"
+  ],
+  "#WEBFONTLOADER": [
+    "node_modules/webfontloader/webfontloader.js"
+  ],
+  "#REQUIREMENTS" : [
+      {
+        "p": "node_modules/jquery/dist",
+        "d": "jquery.js",
+        "m": "jquery.min.js"
+      },
+      {
+        "p": "node_modules/angular",
+        "d": "angular.js",
+        "m": "angular.min.js"
+      },
+      {
+        "p" : "node_modules/angular-animate",
+        "d" : "angular-animate.js",
+        "m" : "angular-animate.min.js"
+      },
+      {
+        "p": "node_modules/bootstrap/dist/js/",
+        "d": "bootstrap.js",
+        "m": "bootstrap.min.js"
+      },
+      {
+        "p": "node_modules/angular-bootstrap",
+        "d": "ui-bootstrap-tpls.js",
+        "m": "ui-bootstrap-tpls.min.js"
+      }
+   ],
+   "#ALLEX_BROWSER_CORE": [
+     "node_modules/allex_browsercore/dist/browsercore.js",
+     "node_modules/allexns/ns.js"
+   ],
+   "#ALLEX_WEBAPP_CORE": [
+      "node_modules/jquery/dist/jquery.min.js",
+      "node_modules/allex_webappwebcomponent/dist/initializator.js",
+      "node_modules/allex_applinkinglib/dist/browserified.js",
+      "node_modules/allex_jobondestroyablelib/dist/browserified.js",
+      "node_modules/allex_applib/dist/browserified.js",
+      "node_modules/allex_templateslitelib/dist/browserified.js",
+      "node_modules/allex_jqueryelementslib/dist/browserified.js"
+   ],
+   "#ALLEX_WEBAPP_CORE_POST": [
+      "node_modules/allex_webappwebcomponent/dist/apploader.js"
+   ],
+   "#ALLEX_I18NEXT_JQUERY": [
+      "node_modules/i18next/i18next.js",
+      "node_modules/jquery-i18next/jquery-i18next.js",
+      "node_modules/allex_i18nwebcomponent/dist/all.js"
+   ],
+   "#ALLEX_I18NEXT_ANGULAR1": [
+      "node_modules/angular-sanitize/angular-sanitize.js",
+      "node_modules/ng-i18next/dist/ng-i18next.js"
+   ],
+   "#ALLEX_ANGULAR1_CORE": [
+      "node_modules/angular/angular.min.js",
+      "node_modules/allex_angular1elementslib/dist/lib.js",
+      "node_modules/allex_angular1elementslib/dist/browserified.js",
+      "node_modules/allex_angular1datatablelib/dist/browserified.js"
+   ],
+   "#ALLEXBASIC": [
+      "node_modules/jquery/dist/jquery.min.js",
+      "node_modules/allex_webappwebcomponent/dist/initializator.js",
+      "node_modules/allex_applinkinglib/dist/browserified.js",
+      "node_modules/allex_jobondestroyablelib/dist/browserified.js",
+      "node_modules/allex_datafilterslib/dist/browserified.js",
+      "node_modules/allex_bufferlib/dist/browserified.js",
+      "node_modules/allex_leveldblib/dist/browserified.js",
+      "node_modules/allex_userrepresentationlib/dist/browserified.js",
+      "node_modules/allex_environmentlib/dist/browserified.js",
+      "node_modules/allex_applib/dist/browserified.js",
+      "node_modules/allex_templateslitelib/dist/browserified.js",
+      "node_modules/allex_jqueryelementslib/dist/browserified.js",
+      "node_modules/allex_httpservice/dist/browserified.js",
+      "node_modules/allex_entrypointservice/dist/browserified.js",
+      "node_modules/allex_dataservice/dist/browserified.js",
+      "node_modules/allex_servicecontainerservice/dist/browserified.js",
+      "node_modules/allex_servicecollectionservice/dist/browserified.js",
+      "node_modules/allex_userservice/dist/browserified.js",
+      "node_modules/allex_hotelservice/dist/browserified.js",
+      "node_modules/allex_usersessionsservice/dist/browserified.js",
+      "node_modules/allex_leveldbservice/dist/browserified.js",
+      "node_modules/allex_userresolverservice/dist/browserified.js",
+      "node_modules/allex_genericuserdataservice/dist/browserified.js"
+   ],
+   "#VEKTR" : [
+      "components/vektr/dist/bridge.allex.js",
+      "components/vektr/dist/lib.js",
+      "components/vektr/dist/angular.js"
+   ],
+   "#BOOT": [
+     "PAGE/fontloaderconfig.js",
+     "PAGE/boot.js"
+   ],
+   "#CONFIG" :[
+    "PAGE/configs.js"
+   ]
+}

@@ -1,0 +1,158 @@
+// Import Bootstrap Compass integration
+@import "bootstrap-compass";
+
+// Import custom Bootstrap variables
+@import "bootstrap-variables";
+
+// Import Bootstrap for Sass
+@import "bootstrap";
+
+@import "compass/css3";
+// @import "animate";
+// @import "animate/fade";
+
+
+// @include font-face("Gotham Book", font-files("Gotham/Gotham-Book.woff", "Gotham/Gotham-Book.eot", "Gotham/Gotham-Book.svg", "Gotham/Gotham-Book.ttf", "Gotham/Gotham-Book.otf"));
+// @include font-face("Gotham Light", font-files("Gotham-Light/Gotham-Light.woff", "Gotham-Light/Gotham-Light.eot", "Gotham-Light/Gotham-Light.svg", "Gotham-Light/Gotham-Light.ttf", "Gotham-Light/Gotham-Light.otf"));
+// @include font-face("Baskerville", font-files("Baskerville/Baskerville-old-face.woff", "Baskerville/Baskerville-old-face.eot", "Baskerville/Baskerville-old-face.svg", "Baskerville/Baskerville-old-face.ttf", "Baskerville/Baskerville-old-face.otf"));
+
+// @include font-face("Proxima Nova", font-files("ProximaNova/ProximaNova-Regular.woff", "ProximaNova/ProximaNova-Regular.eot", "ProximaNova/ProximaNova-Regular.svg", "ProximaNova/ProximaNova-Regular.ttf", "ProximaNova/ProximaNova-Regular.otf"));
+// @include font-face("Proxima Nova Semibold", font-files("ProximaNova/ProximaNova-Semibold.woff", "ProximaNova/ProximaNova-Semibold.eot", "ProximaNova/ProximaNova-Semibold.svg", "ProximaNova/ProximaNova-Semibold.ttf", "ProximaNova/ProximaNova-Semibold.otf"));
+// @include font-face("Proxima Nova Bold", font-files("ProximaNova/ProximaNova-Bold.woff", "ProximaNova/ProximaNova-Bold.eot", "ProximaNova/ProximaNova-Bold.svg", "ProximaNova/ProximaNova-Bold.ttf", "ProximaNova/ProximaNova-Bold.otf"));
+// @include font-face("Proxima Nova Light", font-files("ProximaNova/ProximaNova-Light.woff2", "ProximaNova/ProximaNova-Light.woff", "ProximaNova/ProximaNova-Light.eot", "ProximaNova/ProximaNova-Light.svg", "ProximaNova/ProximaNova-Light.ttf", "ProximaNova/ProximaNova-Light.otf"));
+// @include font-face("Proxima Nova Italic", font-files("ProximaNova/ProximaNova-RegularIt.woff2", "ProximaNova/ProximaNova-RegularIt.woff", "ProximaNova/ProximaNova-RegularIt.eot", "ProximaNova/ProximaNova-RegularIt.svg", "ProximaNova/ProximaNova-RegularIt.ttf", "ProximaNova/ProximaNova-RegularIt.otf"));
+
+
+@import "../../../frameworks/limitless/assets/css/icons/icomoon/styles";
+@import "../../../frameworks/limitless/assets/css/core";
+@import "../../../frameworks/limitless/assets/css/components";
+@import "../../../frameworks/limitless/assets/css/colors";
+@import "../../../frameworks/limitless/assets/css/repair";
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900');
+
+
+@mixin calc($property, $expression) {
+  #{$property}: -moz-calc(#{$expression});
+  #{$property}: -webkit-calc(#{$expression});
+  #{$property}: calc(#{$expression});
+}
+
+@mixin fullbgimg() {
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;		
+}
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == "extrasmall" {
+    @media (max-width: 480px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == "small" {
+    @media (max-width: 767px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == "medium" {
+    @media (max-width: 992px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == "large" {
+    @media (max-width: 1200px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == "extralarge" {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == "desktop" {
+    @media (min-width: 992px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == "smalldesktop" {
+    @media (min-width:992px) and (max-width: 1200px) {
+      @content;
+    }
+  }      
+}
+
+@mixin centered () {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;	
+}
+
+@mixin vcentered () {
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	align-items: center;	
+}
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+@mixin fontSize($size) {
+  font-size: $size; //Fallback in px
+  font-size: calculateRem($size);
+}
+
+.nopad {
+  padding-left:0;
+  padding-right:0;
+}
+
+.alignleft {
+	display: inline;
+	float: left;
+	margin-right: 1.5em;
+}
+.alignright {
+	display: inline;
+	float: right;
+	margin-left: 1.5em;
+}
+body {
+  font-family: "Roboto",Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  line-height: 1.5384616;
+  color: #333;
+  background-color: #f5f5f5;
+}
+div.image_login_holder {
+  display:inline-block;
+}
+.navbar-brand > img {
+  height:24px;
+  margin-top:-1px;
+}
+div.footer {
+  left:0;
+  right:0;
+  text-align:center;
+  a {
+    display:inline-block;
+  }
+}

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" itemscope="itemscope" itemtype="http://schema.org/Product" {% if cache_manifest %} manifest="{{cache_manifest}}" {%- endif %} {% if vars.html -%} {% if vars.html.attributes -%}{% autoescape false %}{{vars.html.attributes}}{% endautoescape %}{%- endif %}{%- endif %}>
+  <head>
+  {% -if vars && vars.jsonmanifest %}
+    <link rel="manifest" href="{{page}}.json">
+  {%- endif %}
+
+  {% if vars.links %}
+    {%- for l in vars.links %}
+      <link {{l | raw}}>
+    {%- endfor %}
+  {% endif %}
+
+  {% block_head %}
+  {% endblock %}
+
+  </head>
+  {% block content %}
+  {% endblock %}
+  {% include '../includes/js.html' %}
+  </body>
+</html>
+

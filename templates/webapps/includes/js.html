@@ -1,0 +1,13 @@
+<!-- will load scripts into page -->
+{%- for script in js %} 
+  {%- if style.conditional -%}
+  <!-- [if {{script.conditional}}]>
+  {%- endif -%}
+
+  <script src="{{ script.path }}"></script>
+  {%- if script.conditional -%}
+    <![endif]-->
+  {%- endif -%}
+
+{%- endfor %}
+

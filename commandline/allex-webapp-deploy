@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+var lib = require('allexlib'),
+  BasicProgram = require('allex_basicprogramsdklib')(lib),
+  Node = require('allex_nodehelpersserverruntimelib')(lib),
+  Fs = Node.Fs,
+  Info = Node.info,
+  throwerror = Node.throwerror,
+  Path = Node.Path,
+  readFieldFromJSONFile = Fs.readFieldFromJSONFile;
+
+
+function deployCommand (repo, message, distro) {
+  var args = [repo,"'"+message+"'"];
+  if (distro) {
+    args.push (distro);
+  }
+  return Path.resolve(__dirname, '..', 'scripts', 'dodeploy')+' '+args.join(' ');
+}
+
+var p = new BasicProgram(__dirname);
+
+p.program
+  .option('-m, --message <string>', 'Commit message')
+  .option('-o, --distro <string>', 'Distribution name')
+  .option('-d, --devel','Move back to devel regime')
+p.go();
+
+if (!p.program.message) {
+  throwerror('Not allowed without message');
+}
+
+var pb, deployment = null;
+
+
+try {
+  pb = readFieldFromJSONFile('protoboard.json', 'protoboard');
+  deployment = pb.deployment;
+}catch (e) {
+  Node.error('Unable to read protoboard.json');
+  process.exit();
+}
+
+
+var command_to_execute = 'allex-webapp-clear';
+
+if (!deployment) throwerror('No deployment record for');
+
+if (p.program.distro){
+  command_to_execute += ' && ';
+  command_to_execute += deployCommand (deployment[p.program.distro], p.program.message, p.program.distro);
+}else{
+  if (lib.isString(deployment)){
+    command_to_execute += deployCommand(deployment, p.program.message);
+  }else {
+    for (var distroname in deployment) {
+      command_to_execute+= " && ";
+      if (distroname === "repo") {
+        Node.warn ("'repo' record in deployment is obsolete ... Use string instead");
+        if ('production' in deployment) throw new Error("production distro present as well, cowardly retreating ...");
+        distroname = 'production';
+      }
+      command_to_execute += deployCommand (deployment[distroname], p.program.message, distroname === 'production' ? null : distroname);
+    }
+  }
+}
+
+if (p.program.devel) {
+  command_to_execute += ('&& allex-webapp-build -d'+(p.program.distro?' -o'+p.program.distro:''));
+}
+
+Node.executeCommand(command_to_execute, null, null, true);

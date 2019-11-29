@@ -1,0 +1,3 @@
+module.exports = [
+  //list your js files here, root is WEBAPP_ROOT/js where WEBAPP_ROOT is dir where protoboard.json resides. If path starts with "component" word, root is WEBAPP_ROOT only ...
+];

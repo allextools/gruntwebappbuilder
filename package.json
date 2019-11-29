@@ -1,0 +1,46 @@
+{
+  "name": "gruntwebappbuilder",
+  "version": "1.0.0",
+  "description": "AllexJS tool for building WebApps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allextools/gruntwebappbuilder.git"
+  },
+  "bin": {
+    "allex-webapp-create": "./commandline/allex-webapp-create",
+    "allex-webapp-build": "./commandline/allex-webapp-build",
+    "allex-webapp-deploy": "./commandline/allex-webapp-deploy",
+    "allex-webapp-compilepage": "./commandline/allex-webapp-compilepage",
+    "allex-webapp-addpage": "./commandline/allex-webapp-addpage",
+    "allex-webapp-clear": "./commandline/allex-webapp-clear",
+    "allex-webapp-purge-packagejson": "./commandline/allex-webapp-purge-packagejson",
+    "allex-webapp-purge-node_modules": "./commandline/allex-webapp-purge-node_modules"
+  },
+  "dependencies": {
+    "allexlib": "2.x",
+    "allex_nodehelpersserverruntimelib": "1.x",
+    "allexmodulerecognitionsync": "1.x",
+    "allex_allexjshelperssdklib": "1.x",
+    "allex_basicprogramsdklib": "1.x",
+    "allex_protoboardhelperssdklib": "1.x",
+    "allex_grunthelperssdklib": "1.x"
+  },
+  "keywords": [
+    "ecosystem:AllexJS",
+    "WebApp",
+    "grunt",
+    "builder",
+    "compiler",
+    "tool"
+  ],
+  "author": "Andrija Petrovic <andrija.hers@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allextools/gruntwebappbuilder/issues"
+  },
+  "homepage": "https://github.com/allextools/gruntwebappbuilder#readme"
+}

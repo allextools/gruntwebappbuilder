@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+var lib = require('allexlib'),
+  webappbuildlib = require('..')(lib),
+  config = webappbuildlib.build,
+  compiler = webappbuildlib.compile.findAndGo,
+  Grunter = require('allex_grunthelperssdklib')(lib),
+  BasicProgram = require('allex_basicprogramsdklib')(lib),
+  p = new BasicProgram(__dirname);
+
+function collector (val, arry) {
+  arry.push(val);
+  return arry;
+}
+
+p.program
+.usage('allex-webapp-build [OPTIONS] : Build your webapps using this tool')
+.option('-c, --clean','Remove all node modules and bower components')
+.option('-f, --file <path>','JSON file where connection data are stored')
+.option('-v, --verbose', 'Do a verbose run')
+.option('-r, --rebuild', 'Rebuild ProtoBoardComponents')
+.option('-d, --development', 'Devel build')
+.option('-s, --symlinkinghints [string]', 'Directories for symlinking to missing modules', collector, [])
+.option('-o, --distro <string>', 'Build distro, overrides production/devel selection if given')
+p.go();
+
+compiler (process.cwd(), p.program.distro);
+Grunter.goforGrunt(config, {
+  connection: p.program.file,
+  devel : p.program.development,
+  clean : p.program.clean,
+  rebuild : p.program.clean || p.program.rebuild,
+  symlinkinghints: p.program.symlinkinghints,
+  distro : p.program.distro,
+  verbose: p.program.verbose
+},{verbose: p.program.verbose});
+
