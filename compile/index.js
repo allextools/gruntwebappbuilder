@@ -92,6 +92,8 @@ function createPageCompile (Lib, Node, recognizeModule) {
       pre: lcss,
       post: allex_data.css.map(assetFinder.bind(null, pb_data, pb_dir, 'css', page_name))
     };
+    pb_data.pages[page_name].vars = allex_data.vars;
+    pb_data.pages[page_name].public_dirs = allex_data.public_dirs;
 
     var layout = pb_data.pages[page_name].layout && pb_data.pages[page_name].layout[variant] ? pb_data.pages[page_name].layout[variant] : 'designer';
 

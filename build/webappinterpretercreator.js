@@ -431,7 +431,7 @@ function createPBWebAppInterpreter (Lib, Node) {
 
       this._adaptJSTemplatesRecords(config, {
         dest_path:Path.resolve(this.cwd, '_generated', name+'.manifest'),
-        src_path:  Path.resolve(__dirname, '..', '..', 'templates', 'webapps', 'cache_manifest.swig'),
+        src_path:  Path.resolve(__dirname, '..', 'templates', 'webapps', 'cache_manifest.swig'),
         data: manifest
       });
     }catch (e) {
@@ -447,7 +447,7 @@ function createPBWebAppInterpreter (Lib, Node) {
     });
   }
 
-  PBWebAppInterpreter.prototype.generageJSONManifest = function (config, pagedata, name) {
+  PBWebAppInterpreter.prototype.generateJSONManifest = function (config, pagedata, name) {
     var distro_value = pagedata.distro_vars && pagedata.distro_vars[this.pbwr.distro] ? pagedata.distro_vars[this.pbwr.distro].jsonmanifest : null,
       value = Lib.extend({}, pagedata.vars.jsonmanifest, distro_value),
       vars = this.processDistroVars(pagedata.vars, pagedata.distro_vars),
@@ -480,7 +480,7 @@ function createPBWebAppInterpreter (Lib, Node) {
       };
       this._adaptJSTemplatesRecords (config, {
         dest_path: Path.resolve(this.cwd, '_generated', name+'.json'),
-        src_path: Path.resolve(__dirname, '..', '..', 'templates', 'webapps', 'json_manifest.swig'),
+        src_path: Path.resolve(__dirname, '..', 'templates', 'webapps', 'json_manifest.swig'),
         data: {data:data}
       });
     }catch (e) {
@@ -494,7 +494,7 @@ function createPBWebAppInterpreter (Lib, Node) {
     }
 
     if (pagedata.vars && pagedata.vars.jsonmanifest) {
-      this.generageJSONManifest(config, pagedata, name);
+      this.generateJSONManifest(config, pagedata, name);
     }
   };
 
