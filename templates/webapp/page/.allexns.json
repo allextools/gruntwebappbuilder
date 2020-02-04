@@ -1,5 +1,6 @@
 [
 {"username": "allex", "namespace": null, "group": "cores", "type": "git", "user": "git", "server": "github.com", "repogroup": "allex-cores"},
 {"username": "allex", "namespace": null, "group": "libs", "type": "git", "user": "git", "server": "github.com", "repogroup": "allex-libs"},
+{"username": "allex", "namespace": null, "group": "weblibs", "type": "git", "user": "git", "server": "github.com", "repogroup": "allex-web-libs"},
 {"username": "allex", "namespace": null, "group": "webcomponents", "type": "git", "user": "git", "server": "github.com", "repogroup": "allex-web-components"}
 ]
