@@ -15,6 +15,14 @@ function createComponentLib (lib, Node) {
         return 'css';
       case '.js':
         return 'js';
+      case '.svg':
+        return 'graphics';
+      case '.ttf':
+        return 'fonts';
+      case '.woff':
+        return 'fonts';
+      case '.woff2':
+        return 'fonts';
       default:
         throw new Error('File extension '+ext+' not recognized as an Asset extension');
     }

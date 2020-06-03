@@ -99,6 +99,9 @@ function createPageCompile (Lib, Node, recognizeModule) {
 
     Fs.writeFileSync (target_file, "{% extends '../layouts/"+layout+".html' %}\n{% block content %}{% raw %}");
     Fs.writeFileSync (target_file, Fs.readFileSync(body_file), {flag: 'a'});
+    if (pb_data.pages[page_name].vars && pb_data.pages[page_name].vars.serviceworker) {
+      Fs.writeFileSync (target_file, "<script>if ('serviceWorker' in navigator) {navigator.serviceWorker.register('/"+page_name+".serviceworker.js');}</script>", {flag:'a'});
+    }
     Fs.writeFileSync (target_file, '{% endraw %}{% endblock %}', {flag:'a'});
 
     Fs.writeJSONSync(pb_file, pb_data);

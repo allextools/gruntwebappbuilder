@@ -538,9 +538,11 @@ function createPBWebAppReader (Lib, Node, globalutil) {
   };
 
   PBWebAppReader.prototype.trySymLinkModule = function (modulename) {
+    /*
     if (!this.devel) {
       return false;
     }
+    */
     if (!Lib.isArray(this.symlinkinghints)) {
       return false;
     }

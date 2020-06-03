@@ -46,7 +46,7 @@ function createPBWebAppInterpreter (Lib, Node) {
   function map_to_cp_command (item) {
     var dest = Path.join('_generated', item.dest),
       ret = 'mkdir -p '+Path.dirname(dest)+' && cp -LRp '+item.src+' '+dest;
-    console.log('will', ret);
+    //console.log('will', ret);
     return ret;
   }
 
@@ -71,7 +71,8 @@ function createPBWebAppInterpreter (Lib, Node) {
       jshint:{},
       exec: {
         clean: 'rm -rf '+Path.resolve(this.cwd, '_tmp')
-      }
+      },
+      serviceworker: page_grunt.serviceworker
     };
 
     //first check if there is a link to includes and layouts
@@ -166,6 +167,7 @@ function createPBWebAppInterpreter (Lib, Node) {
     config.template = {};
 
     this.prepareManifest(config.template);
+    this.prepareServiceWorker(config.template);
     if(this.pbwr.requires_connection) {
       Lib.traverse(this.pbwr.jstemplates, this._adaptJSTemplatesRecords.bind(this, config.template));
     }
@@ -219,6 +221,8 @@ function createPBWebAppInterpreter (Lib, Node) {
   function copyitempusher (ret, cwd, item, dest, src) {
     var finalsrc = Path.join(item.path, src),
       finaldest = Path.join(item.distpath, dest);
+    console.log('with item', item);
+    console.log('copy from', finalsrc, 'to', finaldest);
     if (Fs.dirExists(finalsrc)) {
       ret.push ({
         src: finalsrc,
@@ -273,17 +277,28 @@ function createPBWebAppInterpreter (Lib, Node) {
       Lib.traverseShallow(item.protoboard.copy, copyitempusher.bind(null, ret, this.cwd, item))
     }
     if (item.assets) {
+      /*
       if (Lib.isArray(item.assets.js)) {
       }
       if (Lib.isArray(item.assets.css)) {
         Array.prototype.push.apply(ret, item.assets.css);
       }
+      */
+      Lib.traverseShallow(item.assets, pushAssetsTo.bind(null, ret));
     }
     if (item.public_dirs){
       this.required_dirs[Path.resolve(this.cwd, '_generated', 'components', item.name)] = true;
       Array.prototype.push.apply(ret,item.public_dirs.map(this._componentsPublicDirs.bind(this, item)));
     }
+    ret = null;
   };
+
+  function pushAssetsTo (target, assets, assetsname) {
+    if ('js'===assetsname) {
+      return;
+    }
+    Array.prototype.push.apply(target, assets);
+  }
 
   PBWebAppInterpreter.prototype._componentsPublicDirs = function (item, dir) {
     ///TODO: not tested yet ...
@@ -386,6 +401,36 @@ function createPBWebAppInterpreter (Lib, Node) {
     ///TODO: stigli smo do ovde, ai nismo isli dalje ....
   }
 
+  PBWebAppInterpreter.prototype.fillCache = function (cache, pagedata, name, varspropname) {
+    var value = pagedata.vars[varspropname];
+    if (!value) return;
+
+    if (value.auto) {
+      if (this.pbwr.devel) {
+        cache.push.apply (cache, pagedata.js.map(_dest_path));
+      }else{
+        cache.push ('js/'+name+'.min.js');
+      }
+      cache.push.apply (cache, pagedata.css.map(_dest_path));
+
+      if (value.auto.ignore_partials) {
+        Array.prototype.push.apply(cache, this.getAssetList('partials').map(this._assetListToCache.bind(this)).filter(ignore.bind(null, value.auto.ignore_partials)));
+      }else{
+        Array.prototype.push.apply(cache, this.getAssetList('partials').map(this._assetListToCache.bind(this)));
+      }
+      if (value.auto.ignore_public) {
+        Array.prototype.push.apply(cache, Fs.readdirRecursively(Path.resolve(this.cwd, 'public')).map(appendpublic).filter(ignore.bind(null, value.auto.ignore_public)));
+      }else{
+        Array.prototype.push.apply(cache, Fs.readdirRecursively(Path.resolve(this.cwd, 'public')).map(appendpublic));
+      }
+    }
+
+    if (value.manual_cache) { //not that you can add only files to manifest ...
+      Array.prototype.push.apply(cache, value.manual_cache);
+    }
+
+  };
+
   PBWebAppInterpreter.prototype.generateUniManifest = function (config, pagedata, name) {
     ///
     try {
@@ -395,33 +440,7 @@ function createPBWebAppInterpreter (Lib, Node) {
         network: [],
         fallback : {} 
       };
-      var value = pagedata.vars.manifest;
-      if (!value) return;
-
-      if (value.auto) {
-        if (this.pbwr.devel) {
-          manifest.cache.push.apply (manifest.cache, pagedata.js.map(_dest_path));
-        }else{
-          manifest.cache.push ('js/'+name+'.min.js');
-        }
-        manifest.cache.push.apply (manifest.cache, pagedata.css.map(_dest_path));
-
-        if (value.auto.ignore_partials) {
-          Array.prototype.push.apply(manifest.cache, this.getAssetList('partials').map(this._assetListToCache.bind(this)).filter(ignore.bind(null, value.auto.ignore_partials)));
-        }else{
-          Array.prototype.push.apply(manifest.cache, this.getAssetList('partials').map(this._assetListToCache.bind(this)));
-        }
-        if (value.auto.ignore_public) {
-          Array.prototype.push.apply(manifest.cache, Fs.readdirRecursively(Path.resolve(this.cwd, 'public')).map(appendpublic).filter(ignore.bind(null, value.auto.ignore_public)));
-        }else{
-          Array.prototype.push.apply(manifest.cache, Fs.readdirRecursively(Path.resolve(this.cwd, 'public')).map(appendpublic));
-        }
-      }
-
-      if (value.manual_cache) { //not that you can add only files to manifest ...
-        Array.prototype.push.apply(manifest.cache, value.manual_cache);
-      }
-
+      //this.fillCache(manifest.cache, pagedata, name, 'manifest'); //old feature, skip this
       if (!manifest.cache.length) {
         manifest.cache = null;
       }else{
@@ -429,6 +448,7 @@ function createPBWebAppInterpreter (Lib, Node) {
       if (!manifest.network.length) manifest.network = null;
       if (!Object.keys(manifest.fallback)) manifest.fallback = null;
 
+      console.log('generateUniManifest', config, name);
       this._adaptJSTemplatesRecords(config, {
         dest_path:Path.resolve(this.cwd, '_generated', name+'.manifest'),
         src_path:  Path.resolve(__dirname, '..', 'templates', 'webapps', 'cache_manifest.swig'),
@@ -502,9 +522,35 @@ function createPBWebAppInterpreter (Lib, Node) {
     Lib.traverseShallow (this.pbwr.pages, this._appendCacheManifest.bind(this, config));
   };
 
+  function quoter (thingy) {
+    return '"'+thingy+'"';
+  }
+  PBWebAppInterpreter.prototype.generateServiceWorker = function (config, pagedata, name) {
+    var sw = {
+      cache: []
+    };
+    console.log('generateServiceWorker?', config);
+    this.fillCache(sw.cache, pagedata, name, 'serviceworker');
+    sw.cache = sw.cache.map(quoter);
+    this._adaptJSTemplatesRecords(config, {
+      dest_path:Path.resolve(this.cwd, '_generated', name+'.serviceworker.js'),
+      src_path:  Path.resolve(__dirname, '..', 'templates', 'webapps', 'serviceworker.swig'),
+      data: sw
+    });
+  };
+
+  PBWebAppInterpreter.prototype._appendServiceWorker = function (config, pagedata, name) {
+    this.generateServiceWorker(config, pagedata, name);
+  };
+
+  PBWebAppInterpreter.prototype.prepareServiceWorker = function (config) {
+    Lib.traverseShallow (this.pbwr.pages, this._appendServiceWorker.bind(this, config));
+  };
+
   PBWebAppInterpreter.prototype.gruntPages = function () {
     var ret = {
       template: {},
+      serviceworker: {},
       html: []
     };
     for (var i in this.pbwr.pages) {
@@ -517,6 +563,9 @@ function createPBWebAppInterpreter (Lib, Node) {
         });
       }else{
         ret.template[i] = this._gruntPage(i, this.pbwr.pages[i]);
+      }
+      if (this.pbwr.pages[i].serviceworker) {
+        ret.serviceworker[i] = this.pbwr.pages[i].serviceworker;
       }
     }
     return ret;
