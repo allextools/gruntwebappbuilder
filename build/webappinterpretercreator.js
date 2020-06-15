@@ -218,11 +218,10 @@ function createPBWebAppInterpreter (Lib, Node) {
     };
   };
 
-  function copyitempusher (ret, cwd, item, dest, src) {
-    var finalsrc = Path.join(item.path, src),
+  function copyitempusher (ret, cwd, item, src) {
+    var dest = src,
+      finalsrc = Path.join(item.path, src),
       finaldest = Path.join(item.distpath, dest);
-    console.log('with item', item);
-    console.log('copy from', finalsrc, 'to', finaldest);
     if (Fs.dirExists(finalsrc)) {
       ret.push ({
         src: finalsrc,
@@ -249,7 +248,11 @@ function createPBWebAppInterpreter (Lib, Node) {
         dest: Path.join(this.cwd, '_generated', item.distpath)
       });
       if (item.protoboard && item.protoboard.copy) {
-        Lib.traverseShallow(item.protoboard.copy, linker_for_copy.bind(null, ret, this.cwd, item));
+        if (!Lib.isArray(item.protoboard.copy)) {
+          console.error('Problematic protoboard.copy in item', item);
+          throw new Error('Copy has to be an array of destinations to copy over to _generated result');
+        }
+        item.protoboard.copy.forEach(linker_for_copy.bind(null, ret, this.cwd, item));
       }
     }else{
       console.log(item);
@@ -257,7 +260,8 @@ function createPBWebAppInterpreter (Lib, Node) {
     }
   };
 
-  function linker_for_copy (ret, cwd, item, dest, src) {
+  function linker_for_copy (ret, cwd, item, src) {
+    var dest = src;
     ret.push({
       src: Path.join(cwd, item.path, src),
       dest: Path.join(cwd, '_generated', item.distpath, dest)
@@ -274,16 +278,13 @@ function createPBWebAppInterpreter (Lib, Node) {
       return;
     }
     if (item.protoboard && item.protoboard.copy) {
-      Lib.traverseShallow(item.protoboard.copy, copyitempusher.bind(null, ret, this.cwd, item))
+      if (!Lib.isArray(item.protoboard.copy)) {
+        console.error('Problematic protoboard.copy in item', item);
+        throw new Error('Copy has to be an array of destinations to copy over to _generated result');
+      }
+      item.protoboard.copy.forEach(copyitempusher.bind(null, ret, this.cwd, item));
     }
     if (item.assets) {
-      /*
-      if (Lib.isArray(item.assets.js)) {
-      }
-      if (Lib.isArray(item.assets.css)) {
-        Array.prototype.push.apply(ret, item.assets.css);
-      }
-      */
       Lib.traverseShallow(item.assets, pushAssetsTo.bind(null, ret));
     }
     if (item.public_dirs){
@@ -401,6 +402,44 @@ function createPBWebAppInterpreter (Lib, Node) {
     ///TODO: stigli smo do ovde, ai nismo isli dalje ....
   }
 
+  function copyfile2cache (cache, item, copysrc, srcpath, filename) {
+    var filepath = Path.join(srcpath, filename), destpath;
+    if (!Fs.fileExists(filepath)) {
+      return;
+    }
+    destpath = Path.join(item.module_dist_path, copysrc, filename);
+    if (cache.indexOf(destpath)<0) {
+      cache.push(destpath);
+    }
+  }
+
+  function copyitem2cache (cwd, item, cache, copysrc) {
+    var srcpath = Path.join(cwd, item.module_path, copysrc);
+    try {
+      Fs.readdirSync(srcpath).forEach(copyfile2cache.bind(null, cache, item, copysrc, srcpath));
+    } catch (e) {
+      console.error('Error?', e);
+    }
+    cache = null;
+    item = null;
+    srcpath = null;
+  }
+  function copy2cache (cwd, cache, pageitem) {
+    if (!(pageitem && pageitem.protoboard && Lib.isArray(pageitem.protoboard.copy))) {
+      cwd = null;
+      return;
+    }
+    pageitem.protoboard.copy.forEach(copyitem2cache.bind(null, cwd, pageitem, cache));
+    cwd = null;
+  }
+
+  function sectioncopy2cache (cwd, cache, pagedatasection) {
+    if (Lib.isArray(pagedatasection)) {
+      pagedatasection.forEach(copy2cache.bind(null, cwd, cache));
+    }
+    cwd = null;
+  }
+
   PBWebAppInterpreter.prototype.fillCache = function (cache, pagedata, name, varspropname) {
     var value = pagedata.vars[varspropname];
     if (!value) return;
@@ -412,6 +451,7 @@ function createPBWebAppInterpreter (Lib, Node) {
         cache.push ('js/'+name+'.min.js');
       }
       cache.push.apply (cache, pagedata.css.map(_dest_path));
+      Lib.traverseShallow(pagedata, sectioncopy2cache.bind(null, this.cwd, cache));
 
       if (value.auto.ignore_partials) {
         Array.prototype.push.apply(cache, this.getAssetList('partials').map(this._assetListToCache.bind(this)).filter(ignore.bind(null, value.auto.ignore_partials)));
@@ -448,7 +488,7 @@ function createPBWebAppInterpreter (Lib, Node) {
       if (!manifest.network.length) manifest.network = null;
       if (!Object.keys(manifest.fallback)) manifest.fallback = null;
 
-      console.log('generateUniManifest', config, name);
+      //console.log('generateUniManifest', config, name);
       this._adaptJSTemplatesRecords(config, {
         dest_path:Path.resolve(this.cwd, '_generated', name+'.manifest'),
         src_path:  Path.resolve(__dirname, '..', 'templates', 'webapps', 'cache_manifest.swig'),
@@ -529,7 +569,7 @@ function createPBWebAppInterpreter (Lib, Node) {
     var sw = {
       cache: []
     };
-    console.log('generateServiceWorker?', config);
+    //console.log('generateServiceWorker?', config);
     this.fillCache(sw.cache, pagedata, name, 'serviceworker');
     sw.cache = sw.cache.map(quoter);
     this._adaptJSTemplatesRecords(config, {
