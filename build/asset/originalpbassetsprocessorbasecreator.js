@@ -4,17 +4,6 @@ function createOriginalPBAssetsProcessorBase (lib) {
   function hasComponent (orig, comp) {
     return lib.isEqual(orig, comp);
   }
-  function clearDuplicates (arry) {
-    var ret = [], _r = ret;
-    arry.forEach(function (item) {
-      if (!_r.some(hasComponent.bind(null, item))){
-        _r.push(item);
-      }
-      item = null;
-    });
-    _r = null;
-    return ret;
-  }
 
   function OriginalPBAssetsProcessorBase (assets, protoboard, pagename) {
     this.assets = assets;
@@ -28,7 +17,7 @@ function createOriginalPBAssetsProcessorBase (lib) {
   };
   OriginalPBAssetsProcessorBase.prototype.go = function () {
     var ret;
-    this._assignToTarget(clearDuplicates(
+    this._assignToTarget(this.clearDuplicates(
       this._resolveReferences(this._takeSource())
         .reduce(this._processAsset.bind(this), [])
       )
@@ -69,6 +58,18 @@ function createOriginalPBAssetsProcessorBase (lib) {
   OriginalPBAssetsProcessorBase.prototype._resultOfGo = function () {
     return true;
   };
+
+  OriginalPBAssetsProcessorBase.prototype.clearDuplicates = function (arry) {
+    var ret = [], _r = ret;
+    arry.forEach(function (item) {
+      if (!_r.some(hasComponent.bind(null, item))){
+        _r.push(item);
+      }
+      item = null;
+    });
+    _r = null;
+    return ret;
+  }
 
   return OriginalPBAssetsProcessorBase;
 }

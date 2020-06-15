@@ -15,7 +15,7 @@ function createOriginalPBJSAssetsProcessor(lib, OriginalPBAssetsProcessorBase) {
     return OriginalPBAssetsProcessorBase.prototype._handleProcessedAsset.call(this, result, procasset.js);
   };
   OriginalPBJSAssetsProcessor.prototype._resultOfGo = function () {
-    return this.depCSSs;
+    return this.clearDuplicates(this.depCSSs);
   }
   OriginalPBJSAssetsProcessor.prototype.sectionName = 'js';
 
