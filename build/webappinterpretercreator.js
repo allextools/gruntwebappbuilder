@@ -9,7 +9,7 @@ function createPBWebAppInterpreter (Lib, Node) {
   var Node = require('allex_nodehelpersserverruntimelib')(Lib),
     Fs = Node.Fs,
     Path = Node.Path,
-    WEBAPP_TEMPLATES = Path.resolve (__dirname, '..', '..', 'templates', 'webapps');
+    WEBAPP_TEMPLATES = Path.resolve (__dirname, '..', 'templates', 'webapps');
 
   ///Grunt based interpreter ...
   function PBWebAppInterpreter (pbwr, grunt, params) {
@@ -445,6 +445,7 @@ function createPBWebAppInterpreter (Lib, Node) {
     if (!value) return;
 
     if (value.auto) {
+      cache.push(name+'.html');
       if (this.pbwr.devel) {
         cache.push.apply (cache, pagedata.js.map(_dest_path));
       }else{
