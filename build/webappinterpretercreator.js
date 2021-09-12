@@ -441,7 +441,7 @@ function createPBWebAppInterpreter (Lib, Node) {
   }
 
   PBWebAppInterpreter.prototype.fillCache = function (cache, pagedata, name, varspropname) {
-    var value = pagedata.vars[varspropname];
+    var value = (pagedata && pagedata.vars) ? pagedata.vars[varspropname] : null;
     if (!value) return;
 
     if (value.auto) {

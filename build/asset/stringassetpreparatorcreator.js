@@ -100,13 +100,23 @@ function createStringAssetPreparator (lib, Node) {
     return this.makeAStep();
   };
   StringAssetPreparator.prototype.doInstall = function (modulename) {
-    var installstring;
+    var installstring, nsfile;
     if (!(lib.isArray(this.destpath) && this.destpath.length>0 && this.destpath[0] === 'node_modules')) {
       this.reader.error('Installing '+modulename+' via npm will do no good, because '+modulename+' will not show up in node_modules, giving up');
       return false;
     }
     installstring = (this.reader.pb_data.installResolution && this.reader.pb_data.installResolution[modulename]) ? this.reader.pb_data.installResolution[modulename] : modulename;
     this.didInstall = modulename;
+    if (modulename === 'allexns') {
+      nsfile = Fs.readJSONSync(Path.join(Node.getNamespacePath(), '.allexns.json'));
+      Fs.ensureDirSync(Path.join('allexns'));
+      Fs.writeFileSync(Path.join('allexns', 'ns.js'), "window['.allexns.js'] = "+JSON.stringify(nsfile, null, 2)+";\n");
+      Fs.writeFileSync(Path.join('allexns', 'package.json'), JSON.stringify({
+        name: 'allexns',
+        private: true
+      }, null, 2));
+      return true;
+    }
     Node.info('npm installing '+modulename+(installstring!==modulename ? (' ('+installstring+')') : ''));
     return Node.executeCommandSync('npm install --save '+installstring, {});
   };
