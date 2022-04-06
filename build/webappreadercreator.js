@@ -555,8 +555,10 @@ function createPBWebAppReader (Lib, Node, globalutil) {
       :
       Path.join(this.cwd, hint, modulename);
     if (Fs.dirExists(target)) {
-      Node.info('Symlinking '+target+' as '+modulename);
-      Fs.symlinkSync(target, modulename, 'dir');
+      if (!Fs.dirExists(modulename)) {
+        Node.info('Symlinking '+target+' as '+modulename);
+        Fs.symlinkSync(target, modulename, 'junction'); //'dir' will not work, so 'junction'
+      }
       return true;
     }
   };
