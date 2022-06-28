@@ -107,8 +107,7 @@ function createPBWebAppInterpreter (Lib, Node) {
       config.jshint.devel = {
         options: {
           globals: {
-            'jQuery': true,
-            'angular':true
+            'jQuery': true
           }
         },
         files: {
