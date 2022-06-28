@@ -37,8 +37,8 @@ function createWebAppInit (lib, Node) {
       framework_root = Path.resolve(__dirname, '..', 'templates', 'webapp', 'frameworks');
 
     Fs.copySync (Path.join (template_root, '*'), dirname);
-    Fs.symlinkSync (Path.join (sdk_common, 'layouts'), Path.join (dirname, 'layouts'));
-    Fs.symlinkSync (Path.join (sdk_common, 'includes'), Path.join (dirname, 'includes'));
+    Fs.symlinkSync (Path.join (sdk_common, 'layouts'), Path.join (dirname, 'layouts'), 'junction');
+    Fs.symlinkSync (Path.join (sdk_common, 'includes'), Path.join (dirname, 'includes'), 'junction');
 
     MANDATORY_DIRS.forEach(dirCreator.bind(null, dirname));
     process.chdir(dirname);
@@ -52,7 +52,7 @@ function createWebAppInit (lib, Node) {
         framework_path = Path.resolve(framework_root, frameworks[i]);
         if (!Fs.dirExists(framework_path)) throw new Error ('Unknown framework: '+frameworks[i]);
         Fs.ensureDirSync (Path.resolve (dirname, 'frameworks'));
-        Fs.symlinkSync (framework_path, Path.resolve (dirname, 'frameworks', frameworks[i]));
+        Fs.symlinkSync (framework_path, Path.resolve (dirname, 'frameworks', frameworks[i]), 'junction');
       }
 
       var pb = Fs.readJSONSync (Path.resolve(dirname, 'protoboard.json'));
