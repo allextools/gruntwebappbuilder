@@ -6,7 +6,6 @@
         "m": "bootstrap.min.css"
       },
       "node_modules/components-font-awesome/css/font-awesome.css",
-      "node_modules/angular-ui-grid/ui-grid.css",
       "generic.css",
       "overrides.css"
   ],
@@ -20,24 +19,9 @@
         "m": "jquery.min.js"
       },
       {
-        "p": "node_modules/angular",
-        "d": "angular.js",
-        "m": "angular.min.js"
-      },
-      {
-        "p" : "node_modules/angular-animate",
-        "d" : "angular-animate.js",
-        "m" : "angular-animate.min.js"
-      },
-      {
         "p": "node_modules/bootstrap/dist/js/",
         "d": "bootstrap.js",
         "m": "bootstrap.min.js"
-      },
-      {
-        "p": "node_modules/angular-bootstrap",
-        "d": "ui-bootstrap-tpls.js",
-        "m": "ui-bootstrap-tpls.min.js"
       }
    ],
    "#ALLEX_BROWSER_CORE": [
@@ -60,16 +44,6 @@
       "node_modules/i18next/i18next.js",
       "node_modules/jquery-i18next/jquery-i18next.js",
       "node_modules/allex_i18nwebcomponent/dist/all.js"
-   ],
-   "#ALLEX_I18NEXT_ANGULAR1": [
-      "node_modules/angular-sanitize/angular-sanitize.js",
-      "node_modules/ng-i18next/dist/ng-i18next.js"
-   ],
-   "#ALLEX_ANGULAR1_CORE": [
-      "node_modules/angular/angular.min.js",
-      "node_modules/allex_angular1elementslib/dist/lib.js",
-      "node_modules/allex_angular1elementslib/dist/browserified.js",
-      "node_modules/allex_angular1datatablelib/dist/browserified.js"
    ],
    "#ALLEXBASIC": [
       "node_modules/jquery/dist/jquery.min.js",
@@ -98,8 +72,7 @@
    ],
    "#VEKTR" : [
       "components/vektr/dist/bridge.allex.js",
-      "components/vektr/dist/lib.js",
-      "components/vektr/dist/angular.js"
+      "components/vektr/dist/lib.js"
    ],
    "#BOOT": [
      "PAGE/fontloaderconfig.js",
