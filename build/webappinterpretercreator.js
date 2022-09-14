@@ -167,6 +167,7 @@ function createPBWebAppInterpreter (Lib, Node) {
 
     this.prepareManifest(config.template);
     this.prepareServiceWorker(config.template);
+    this.prepareComponentTemplate(config.template);
     if(this.pbwr.requires_connection) {
       Lib.traverse(this.pbwr.jstemplates, this._adaptJSTemplatesRecords.bind(this, config.template));
     }
@@ -560,31 +561,85 @@ function createPBWebAppInterpreter (Lib, Node) {
 
   PBWebAppInterpreter.prototype.prepareManifest = function (config) {
     Lib.traverseShallow (this.pbwr.pages, this._appendCacheManifest.bind(this, config));
+    config = null;
   };
 
   function quoter (thingy) {
     return '"'+thingy+'"';
   }
-  PBWebAppInterpreter.prototype.generateServiceWorker = function (config, pagedata, name) {
+  PBWebAppInterpreter.prototype.generateServiceWorker = function (config, pagedata, pagename) {
     var sw = {
       cache: []
     };
     //console.log('generateServiceWorker?', config);
-    this.fillCache(sw.cache, pagedata, name, 'serviceworker');
+    this.fillCache(sw.cache, pagedata, pagename, 'serviceworker');
     sw.cache = sw.cache.map(quoter);
     this._adaptJSTemplatesRecords(config, {
-      dest_path:Path.resolve(this.cwd, '_generated', name+'.serviceworker.js'),
+      dest_path:Path.resolve(this.cwd, '_generated', pagename+'.serviceworker.js'),
       src_path:  Path.resolve(__dirname, '..', 'templates', 'webapps', 'serviceworker.swig'),
       data: sw
     });
   };
 
-  PBWebAppInterpreter.prototype._appendServiceWorker = function (config, pagedata, name) {
-    this.generateServiceWorker(config, pagedata, name);
+  PBWebAppInterpreter.prototype._appendServiceWorker = function (config, pagedata, pagename) {
+    this.generateServiceWorker(config, pagedata, pagename);
   };
-
   PBWebAppInterpreter.prototype.prepareServiceWorker = function (config) {
     Lib.traverseShallow (this.pbwr.pages, this._appendServiceWorker.bind(this, config));
+    config = null;
+  };
+
+  PBWebAppInterpreter.prototype._appendComponentTemplateUnit = function (config, pagename, module, templateconf, templateunit) {
+    var modulepath, moduledistpath, inpath, outpath;
+    modulepath = module.path;
+    moduledistpath = module.distpath;
+    inpath = Path.resolve.apply(null, [this.cwd, modulepath].concat(templateunit.input))
+    outpath = Path.resolve(this.cwd, '_generated', templateunit.output.relative ? moduledistpath : '', templateunit.output);
+    this._adaptJSTemplatesRecords(config, {
+      dest_path: outpath,
+      src_path:  inpath,
+      data: templateconf
+    });
+    /*
+    config[outpath] = {
+      files: {
+        outpath: inpath
+      },
+      options: {
+        data: templateconf
+      }
+    };
+    */
+  };
+  PBWebAppInterpreter.prototype._appendComponentTemplate = function (config, pagename, templateconf, templatemodulename) {
+    var module, modulepb, modulepbtemplate;
+    if (!templatemodulename) return;
+    module = this.pbwr.components.get(templatemodulename);
+    if (!module) return;
+    modulepb = module.protoboard;
+    if (!modulepb) return;
+    modulepbtemplate = modulepb.template;
+    if (!modulepbtemplate) return;
+    if (Lib.isArray(modulepbtemplate)) {
+      modulepbtemplate.forEach(this._appendComponentTemplateUnit.bind(this, config, pagename, module, templateconf));
+      config = null;
+      pagename = null;
+      module = null;
+      templateconf = null;
+      return;
+    }
+  };
+  PBWebAppInterpreter.prototype._traversePageDataTemplate = function (config, pagedata, pagename) {
+    if (!pagedata.template) {
+      return;
+    }
+    Lib.traverseShallow(pagedata.template, this._appendComponentTemplate.bind(this, config, pagename));
+    config = null;
+    pagename = null;
+  };
+  PBWebAppInterpreter.prototype.prepareComponentTemplate = function (config) {
+    Lib.traverseShallow (this.pbwr.pages, this._traversePageDataTemplate.bind(this, config));
+    config = null;
   };
 
   PBWebAppInterpreter.prototype.gruntPages = function () {
