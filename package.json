@@ -21,7 +21,7 @@
     "allex-webapp-purge-node_modules": "./commandline/allex-webapp-purge-node_modules"
   },
   "dependencies": {
-    "allexlib": "2.x",
+    "allexlib": "3.x",
     "allex_nodehelpersserverruntimelib": "1.x",
     "allexmodulerecognitionsync": "1.x",
     "allex_allexjshelperssdklib": "1.x",
