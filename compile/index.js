@@ -94,6 +94,7 @@ function createPageCompile (Lib, Node, recognizeModule) {
     };
     pb_data.pages[page_name].vars = allex_data.vars;
     pb_data.pages[page_name].public_dirs = allex_data.public_dirs;
+    pb_data.pages[page_name].template = allex_data.template;
 
     var layout = pb_data.pages[page_name].layout && pb_data.pages[page_name].layout[variant] ? pb_data.pages[page_name].layout[variant] : 'designer';
 

@@ -258,6 +258,7 @@ function createPBWebAppReader (Lib, Node, globalutil) {
       'vars': p_data.vars,
       'distro_vars' : p_data.distro_vars,
       'include_manifest_devel' : p_data.include_manifest_devel,
+      'template': p_data.template
     };
 
 
