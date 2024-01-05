@@ -23,7 +23,7 @@ function createBuild (Lib, Node, globalutil) {
       description: 'WebApp',
       repository: 'N/A',
       license: 'MIT'
-    }));
+    }, null, 2));
     process.chdir(cwd);
     return Q(true);
   };
@@ -49,6 +49,11 @@ function createBuild (Lib, Node, globalutil) {
     return Q.resolve(true);
   }
 
+  function infoer (txt) {
+    Node.info(txt);
+    return Q(true);
+  }
+
   function do_grunt (grunt, params) {
 
     var dir = params.pb_dir ? params.pb_dir : process.cwd();
@@ -57,7 +62,9 @@ function createBuild (Lib, Node, globalutil) {
       Node.Fs.remove.bind(Node.Fs, Node.Path.join(dir, 'node_modules', 'allexns')), 
       //Node.executeCommand.bind(Node, params.devel ? 'allex-bower-install' : 'bower install', null, {cwd:dir}, true),
       ensurePackageJson.bind(null, dir),
+      infoer.bind(null, 'Clearing broken symlinks'),
       Node.executeCommand.bind(Node, 'find node_modules -type l -exec sh -c \'file -b "$1" | grep -q ^broken\' sh {} \\; -print | xargs rm -f', null, {cwd:dir}, true), //remove all broken symlinks
+      infoer.bind(null, 'npm install --no-package-lock --no-save'),
       Node.executeCommand.bind(Node, 'npm install --no-package-lock --no-save', null, {cwd:dir}, true),
       buildWebapp.bind(null, params.devel, params.rebuild, params.distro, params.pb_dir, params.symlinkinghints, params.verbose),
       buildGrunt.bind(null, grunt, params)

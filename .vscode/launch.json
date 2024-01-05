@@ -12,8 +12,8 @@
         "<node_internals>/**"
       ],
       "program": "${env:HOME}/bin/allex-webapp-build",
-      "cwd": "${env:HOME}/Work/app/app",
-      "args": ["-d", "-s", "allexjs_modules_dev/"]
+      "cwd": "${env:HOME}/Work/fixenginewebapp",
+      "args": ["-d", "-s", "allexjs_modules_dev/", "-s", "../webappcommondev/", "-s", "../webapp-indata-commondev/"]
     }
   ]
 }
