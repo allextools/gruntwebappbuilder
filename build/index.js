@@ -91,7 +91,7 @@ function createBuild (Lib, Node, globalutil) {
       'grunt-file-exists',
       'grunt-template',
       'grunt-contrib-concat',
-      'hers-grunt-contrib-uglify', 
+      'grunt-contrib-uglify', 
       'grunt-exec'
     ],
     tasklist: ['default']
